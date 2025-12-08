@@ -1,19 +1,27 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
-import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
-
+import { AppLogger } from '@poster-parlor-api/logger';
+import { AppConfigService } from '@poster-parlor-api/config';
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  });
+
+  //Logger Configuration
+  const logger = app.get(AppLogger);
+  logger.setContext('Bootstrap');
+  app.useLogger(logger);
+
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3000;
+  const config = app.get(AppConfigService);
+
+  const port = config.appConfig.port;
   await app.listen(port);
-  Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
+
+  logger.log(
+    `Application is running on: http://localhost:${port}/${globalPrefix}`
+  );
 }
 
 bootstrap();

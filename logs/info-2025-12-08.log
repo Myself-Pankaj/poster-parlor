@@ -1,0 +1,52 @@
+{"@timestamp":"2025-Dec-08 10:52:14","level":"info","message":"Starting Nest application...","context":"NestFactory"}
+{"@timestamp":"2025-Dec-08 10:52:14","level":"info","message":"WinstonModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:52:14","level":"info","message":"ConfigHostModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:52:14","level":"info","message":"AppModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:52:14","level":"info","message":"LoggerModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:52:14","level":"info","message":"ConfigModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:52:14","level":"info","message":"AppConfigModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:52:14","level":"info","message":"AppController {/api}:","context":"RoutesResolver"}
+{"@timestamp":"2025-Dec-08 10:52:14","level":"info","message":"Mapped {/api, GET} route","context":"RouterExplorer"}
+{"@timestamp":"2025-Dec-08 10:52:14","level":"info","message":"Nest application successfully started","context":"NestApplication"}
+{"@timestamp":"2025-Dec-08 10:52:14","level":"info","message":"Application is running on: http://localhost:4000/api","context":"Bootstrap"}
+{"@timestamp":"2025-Dec-08 10:56:14","level":"info","message":"Starting Nest application...","context":"NestFactory"}
+{"@timestamp":"2025-Dec-08 10:56:14","level":"info","message":"WinstonModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:14","level":"info","message":"ConfigHostModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:14","level":"info","message":"AppModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:14","level":"info","message":"LoggerModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:14","level":"info","message":"ConfigModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:14","level":"info","message":"AppConfigModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:14","level":"info","message":"AppController {/api}:","context":"RoutesResolver"}
+{"@timestamp":"2025-Dec-08 10:56:14","level":"info","message":"Mapped {/api, GET} route","context":"RouterExplorer"}
+{"@timestamp":"2025-Dec-08 10:56:14","level":"info","message":"Nest application successfully started","context":"NestApplication"}
+{"@timestamp":"2025-Dec-08 10:56:14","level":"info","message":"Application is running on: http://localhost:4000/api","context":"Bootstrap"}
+{"@timestamp":"2025-Dec-08 10:56:21","level":"info","message":"Starting Nest application...","context":"NestFactory"}
+{"@timestamp":"2025-Dec-08 10:56:21","level":"info","message":"WinstonModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:21","level":"info","message":"ConfigHostModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:21","level":"info","message":"AppModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:21","level":"info","message":"LoggerModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:21","level":"info","message":"ConfigModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:21","level":"info","message":"AppConfigModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:21","level":"info","message":"AppController {/api}:","context":"RoutesResolver"}
+{"@timestamp":"2025-Dec-08 10:56:21","level":"info","message":"Mapped {/api, GET} route","context":"RouterExplorer"}
+{"@timestamp":"2025-Dec-08 10:56:21","level":"info","message":"Nest application successfully started","context":"NestApplication"}
+{"@timestamp":"2025-Dec-08 10:56:21","level":"info","message":"Application is running on: http://localhost:4000/api","context":"Bootstrap"}
+{"@timestamp":"2025-Dec-08 10:56:52","level":"info","message":"Starting Nest application...","context":"NestFactory"}
+{"@timestamp":"2025-Dec-08 10:56:52","level":"info","message":"MongooseModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:52","level":"info","message":"WinstonModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:52","level":"info","message":"ConfigHostModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:52","level":"info","message":"AppModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:52","level":"info","message":"LoggerModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:52","level":"info","message":"ConfigModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:52","level":"info","message":"ConfigModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:52","level":"info","message":"Connecting to poster-parlor at mongodb://localhost:27017","context":"DatabaseConfig"}
+{"@timestamp":"2025-Dec-08 10:56:52","level":"info","message":"AppConfigModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:52","level":"info","message":"MongooseCoreModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:52","level":"info","message":"DatabaseModule dependencies initialized","context":"InstanceLoader"}
+{"@timestamp":"2025-Dec-08 10:56:52","level":"info","message":"AppController {/api}:","context":"RoutesResolver"}
+{"@timestamp":"2025-Dec-08 10:56:52","level":"info","message":"Mapped {/api, GET} route","context":"RouterExplorer"}
+{"@timestamp":"2025-Dec-08 10:56:52","level":"info","message":"DatabaseController {/api/db-health}:","context":"RoutesResolver"}
+{"@timestamp":"2025-Dec-08 10:56:52","level":"info","message":"Mapped {/api/db-health, GET} route","context":"RouterExplorer"}
+{"@timestamp":"2025-Dec-08 10:56:52","level":"info","message":"Database Module Initialized","context":"DatabaseModule"}
+{"@timestamp":"2025-Dec-08 10:56:52","level":"info","message":"Nest application successfully started","context":"NestApplication"}
+{"@timestamp":"2025-Dec-08 10:56:52","level":"info","message":"Application is running on: http://localhost:4000/api","context":"Bootstrap"}
