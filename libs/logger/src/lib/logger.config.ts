@@ -2,6 +2,7 @@
 import * as winston from 'winston';
 import 'winston-daily-rotate-file';
 import { utilities as nestWinstonModuleUtilities } from 'nest-winston';
+
 const tsFormat = (): string => {
   const now = new Date();
   const isOffset = 5.5 * 60 * 60 * 1000;
@@ -31,6 +32,7 @@ const tsFormat = (): string => {
 
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
+
 const productionFormat = winston.format.printf(
   ({ timestamp, level, message, context, trace, error, ...metadata }) => {
     const logObject: any = {
@@ -50,6 +52,7 @@ const productionFormat = winston.format.printf(
     return JSON.stringify(logObject);
   }
 );
+
 const consoleTransport = new winston.transports.Console({
   level: process.env['NODE_ENV'] === 'production' ? 'info' : 'debug',
   format: winston.format.combine(
@@ -60,6 +63,8 @@ const consoleTransport = new winston.transports.Console({
     })
   ),
 });
+
+// Info transport - logs info, warn, and debug (but NOT error)
 const fileInfoTransport = new winston.transports.DailyRotateFile({
   dirname: 'logs',
   filename: 'info-%DATE%.log',
@@ -70,12 +75,19 @@ const fileInfoTransport = new winston.transports.DailyRotateFile({
   maxFiles: '30d',
   format: winston.format.combine(
     winston.format.timestamp({ format: tsFormat }),
+    // Filter out error level logs from info file
+    winston.format((info) => {
+      return info.level === 'error' ? false : info;
+    })(),
     productionFormat
   ),
 });
+
+// Error transport - logs ONLY errors
 const fileErrorTransport = new winston.transports.DailyRotateFile({
   dirname: 'logs',
   filename: 'error-%DATE%.log',
+  level: 'error', // 🔥 THIS IS THE KEY FIX
   datePattern: 'YYYY-MM-DD',
   zippedArchive: true,
   maxSize: '20m',
@@ -85,13 +97,14 @@ const fileErrorTransport = new winston.transports.DailyRotateFile({
     productionFormat
   ),
 });
+
 export const loggerConfig = {
   format: winston.format.combine(
     winston.format.timestamp({ format: tsFormat }),
     winston.format.errors({ stack: true })
   ),
 
-  transports: [consoleTransport, fileInfoTransport],
+  transports: [consoleTransport, fileInfoTransport, fileErrorTransport],
 
   exceptionHandlers: [fileErrorTransport],
   rejectionHandlers: [fileErrorTransport],

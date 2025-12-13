@@ -2,6 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { AppLogger } from '@poster-parlor-api/logger';
 import { AppConfigService } from '@poster-parlor-api/config';
+import { ValidationPipe } from '@nestjs/common';
+import {
+  GlobalExceptionFilter,
+  ResponseInterceptor,
+} from '@poster-parlor-api/utils';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
@@ -15,6 +20,22 @@ async function bootstrap() {
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   const config = app.get(AppConfigService);
+
+  // Global pipes
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    })
+  );
+
+  // // Global filters and interceptors (inject logger)
+  app.useGlobalFilters(new GlobalExceptionFilter(logger));
+  app.useGlobalInterceptors(new ResponseInterceptor(logger));
 
   const port = config.appConfig.port;
   await app.listen(port);
