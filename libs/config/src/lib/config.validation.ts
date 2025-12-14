@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import { plainToInstance } from 'class-transformer';
+import { plainToInstance, Type } from 'class-transformer';
 import {
   IsEnum,
   IsNotEmpty,
@@ -18,30 +18,62 @@ enum Environment {
 
 class EnvironmentVaribale {
   @IsEnum(Environment, {
-    message: 'NODE_ENV must be included from [production ,development]',
+    message: 'NODE_ENV must be either production or development',
   })
   @IsNotEmpty({ message: 'NODE_ENV is required' })
   NODE_ENV!: Environment;
 
+  @Type(() => Number)
   @IsNumber({}, { message: 'PORT must be a valid number' })
-  @Min(1000, { message: 'PORT must be atleat 1000' })
+  @Min(1000, { message: 'PORT must be at least 1000' })
   @Max(65535, { message: 'PORT must be less than 65535' })
-  @IsNotEmpty({ message: 'PORT is required' })
   PORT!: number;
 
-  @IsString({ message: 'DATABASE_URL must be  valid string' })
-  @IsNotEmpty({ message: 'DATABASE_URL is reuired' })
+  @IsString({ message: 'DB_URL must be a valid string' })
+  @IsNotEmpty({ message: 'DB_URL is required' })
   DB_URL!: string;
 
-  @IsString({ message: 'DATABASE_NAME must be  valid string' })
-  @IsNotEmpty({ message: 'DATABASE_NAME is reuired' })
+  @IsString({ message: 'DB_NAME must be a valid string' })
+  @IsNotEmpty({ message: 'DB_NAME is required' })
   DB_NAME!: string;
 
+  @Type(() => Number)
   @IsNumber({}, { message: 'POOL_SIZE must be a number' })
-  @IsNotEmpty({ message: 'POOL_SIZE is required' })
-  @Min(1, { message: 'POOL_SIZE must be atleat 1' })
+  @Min(1, { message: 'POOL_SIZE must be at least 1' })
   @Max(30, { message: 'POOL_SIZE must be less than 30' })
   POOL_SIZE!: number;
+
+  /* ---------------- GOOGLE OAUTH ---------------- */
+
+  @IsString({ message: 'GOOGLE_CLIENT_ID must be a valid string' })
+  @IsNotEmpty({ message: 'GOOGLE_CLIENT_ID is required' })
+  GOOGLE_CLIENT_ID!: string;
+
+  @IsString({ message: 'GOOGLE_CLIENT_SECRET must be a valid string' })
+  @IsNotEmpty({ message: 'GOOGLE_CLIENT_SECRET is required' })
+  GOOGLE_CLIENT_SECRET!: string;
+
+  @IsString({ message: 'GOOGLE_CALLBACK_URL must be a valid string' })
+  @IsNotEmpty({ message: 'GOOGLE_CALLBACK_URL is required' })
+  GOOGLE_CALLBACK_URL!: string;
+
+  /* ---------------- JWT ---------------- */
+
+  @IsString({ message: 'JWT_ACCESS_TOKEN_SECRET must be a valid string' })
+  @IsNotEmpty({ message: 'JWT_ACCESS_TOKEN_SECRET is required' })
+  JWT_ACCESS_TOKEN_SECRET!: string;
+
+  @IsString({ message: 'JWT_ACCESS_TOKEN_EXPIRES_IN must be a valid string' })
+  @IsNotEmpty({ message: 'JWT_ACCESS_TOKEN_EXPIRES_IN is required' })
+  JWT_ACCESS_TOKEN_EXPIRES_IN!: string;
+
+  @IsString({ message: 'JWT_REFRESH_TOKEN_SECRET must be a valid string' })
+  @IsNotEmpty({ message: 'JWT_REFRESH_TOKEN_SECRET is required' })
+  JWT_REFRESH_TOKEN_SECRET!: string;
+
+  @IsString({ message: 'JWT_ACCESS_TOKEN_EXPIRES_IN must be a valid string' })
+  @IsNotEmpty({ message: 'JWT_ACCESS_TOKEN_EXPIRES_IN is required' })
+  JWT_REFRESH_TOKEN_EXPIRES_IN!: string;
 }
 
 const logger = new Logger('ConfigValidation');

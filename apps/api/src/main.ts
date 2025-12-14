@@ -7,6 +7,7 @@ import {
   GlobalExceptionFilter,
   ResponseInterceptor,
 } from '@poster-parlor-api/utils';
+import cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
@@ -20,6 +21,8 @@ async function bootstrap() {
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   const config = app.get(AppConfigService);
+
+  app.use(cookieParser());
 
   // Global pipes
   app.useGlobalPipes(

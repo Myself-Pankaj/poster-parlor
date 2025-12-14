@@ -7,3 +7,13 @@ export interface DBConfig {
   dburl: string;
   poolsize: number;
 }
+
+export interface AuthConfig {
+  clientId: string;
+  clientSecret: string;
+  callbackUrl: string;
+  jwtAccessTokenSecret: string;
+  jwtAccessTokenExpiry: number;
+  jwtRefreshTokenSecret: string;
+  jwtRefreshTokenExpiry: number;
+}
