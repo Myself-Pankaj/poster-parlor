@@ -1,17 +1,13 @@
-import {
-  Injectable,
-  ExecutionContext,
-  UnauthorizedException,
-  Logger,
-} from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Injectable, ExecutionContext, HttpStatus } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { AuthGuard } from '@nestjs/passport';
+import {
+  CustomHttpException,
+  UnauthorizedException,
+} from '@poster-parlor-api/utils';
 import { Observable } from 'rxjs';
-
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-  private readonly logger = new Logger(JwtAuthGuard.name);
-
   constructor(private readonly reflector: Reflector) {
     super();
   }
@@ -20,7 +16,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     context: ExecutionContext
   ): boolean | Promise<boolean> | Observable<boolean> {
     try {
-      // Check if route is marked as public
       const isPublic = this.reflector.getAllAndOverride<boolean>('isPublic', [
         context.getHandler(),
         context.getClass(),
@@ -29,45 +24,43 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       if (isPublic === true) {
         return true;
       }
-
-      // Proceed with JWT validation
       return super.canActivate(context);
     } catch (error) {
-      this.logger.error('Error in canActivate:', error);
-      throw new UnauthorizedException('Authentication failed');
+      throw new CustomHttpException(
+        'Authentication Failed',
+        500,
+        'AUTH_FAILED',
+        error
+      );
     }
   }
 
   override handleRequest<
     TUser extends Record<string, unknown> = Record<string, unknown>
   >(err: Error | null, user: TUser | false, info: Error | undefined): TUser {
-    // Handle errors from passport
     if (err) {
-      this.logger.error('Authentication error:', err);
       throw err;
     }
 
-    // Handle missing user (authentication failed)
     if (!user) {
-      // Provide specific error messages based on info
       if (info) {
         if (info.name === 'TokenExpiredError') {
           throw new UnauthorizedException('Token has expired');
         }
         if (info.name === 'JsonWebTokenError') {
-          throw new UnauthorizedException('Invalid token');
+          throw new CustomHttpException(
+            'Token has expired',
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            'JSON_WEB_TOKEN_ERROR'
+          );
         }
         if (info.name === 'NotBeforeError') {
-          throw new UnauthorizedException('Token not yet valid');
+          throw new UnauthorizedException('Token is not yet valid');
         }
-
-        this.logger.warn(`Authentication failed: ${info.message}`);
       }
-
-      throw new UnauthorizedException('Login required to access this route');
+      throw new UnauthorizedException('Login Required to access this resource');
     }
 
-    // Return validated user
     return user;
   }
 }

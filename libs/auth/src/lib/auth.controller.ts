@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Req,
   Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -32,17 +33,20 @@ export class GoogleAuthController {
 
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
-  async refresh(@Res() req: Request) {
+  async refresh(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response // ✅ Add Response object
+  ) {
     const token = req.cookies?.['refresh_token'];
 
     if (!token) {
       throw new UnauthorizedException('No refresh token is provided');
     }
-    const result = await this.googleAuthService.refreshAccessToken(token);
+
+    const result = await this.googleAuthService.refreshAccessToken(token, res); // ✅ Pass res
 
     return result;
   }
-
   @Get('me')
   async getCurrentUser(@Res() req: Request & { user: RequestUser }) {
     const result = req.user;

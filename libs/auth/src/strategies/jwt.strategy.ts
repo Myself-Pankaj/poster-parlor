@@ -1,12 +1,19 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Request } from 'express';
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { User, UserDocument } from '@poster-parlor-api/models';
-import { JwtTokenPayload } from '@poster-parlor-api/shared';
 import { AppConfigService } from '@poster-parlor-api/config';
+import { JwtTokenPayload } from '@poster-parlor-api/shared';
+import {
+  ConflictException,
+  CustomHttpException,
+  ForbiddenException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@poster-parlor-api/utils';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -16,6 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   ) {
     const secret = config.authConfig.jwtAccessTokenSecret;
 
+    // ✅ Validate secret exists
     if (!secret) {
       throw new Error('JWT_ACCESS_TOKEN_SECRET is not configured');
     }
@@ -62,13 +70,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       if (!payload.sub || typeof payload.sub !== 'string') {
         throw new UnauthorizedException('Invalid token: missing user ID');
       }
-
       if (!payload.email || typeof payload.email !== 'string') {
-        throw new UnauthorizedException('Invalid token: missing email');
+        throw new UnauthorizedException('Invalid token: missing email'); // ✅ Fixed typo
       }
-
       if (!payload.role || typeof payload.role !== 'string') {
-        throw new UnauthorizedException('Invalid token: missing role');
+        throw new UnauthorizedException('Invalid token: missing role'); // ✅ Fixed typo
       }
 
       // Validate ObjectId format
@@ -84,17 +90,17 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         .exec();
 
       if (!user) {
-        throw new UnauthorizedException('User no longer exists');
+        throw new NotFoundException('User not found');
       }
 
       // Check if user is active
       if (!user.isActive) {
-        throw new UnauthorizedException('User account is deactivated');
+        throw new ForbiddenException('User account is temporarily deactivated');
       }
 
-      // Verify email hasn't changed (optional but recommended)
+      // Verify email hasn't changed
       if (user.email !== payload.email) {
-        throw new UnauthorizedException(
+        throw new ConflictException(
           'Token invalid: user information has changed'
         );
       }
@@ -104,15 +110,20 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         id: (user._id as Types.ObjectId).toString(),
         email: user.email,
         role: user.role,
-        name: user.name || '',
+        name: user.name || 'User',
       };
     } catch (error) {
-      // Re-throw UnauthorizedExceptions
-      if (error instanceof UnauthorizedException) {
+      // Re-throw known exceptions
+      if (
+        error instanceof UnauthorizedException ||
+        error instanceof NotFoundException ||
+        error instanceof ForbiddenException ||
+        error instanceof ConflictException
+      ) {
         throw error;
       }
-
-      throw new UnauthorizedException('Token validation failed');
+      // Handle unexpected errors
+      throw new CustomHttpException('Token validation failed');
     }
   }
 

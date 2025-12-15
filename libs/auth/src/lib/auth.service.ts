@@ -73,12 +73,25 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  setCookies(res: Response, refreshToken: string): void {
-    res.cookie('refresh_token', refreshToken, {
+  setCookies(res: Response, tokens: Token): void {
+    const accessTokenMaxAge = this.config.authConfig.jwtAccessTokenExpiry;
+    const refreshTokenMaxAge = this.config.authConfig.jwtRefreshTokenExpiry;
+
+    // Set access token cookie
+    res.cookie('access_token', tokens.accessToken, {
       httpOnly: true,
       secure: this.config.isProduction,
       sameSite: this.config.isProduction ? 'strict' : 'lax',
-      maxAge: 15 * 60 * 60 * 1000,
+      maxAge: accessTokenMaxAge,
+      path: '/',
+    });
+
+    // Set refresh token cookie
+    res.cookie('refresh_token', tokens.refreshToken, {
+      httpOnly: true,
+      secure: this.config.isProduction,
+      sameSite: this.config.isProduction ? 'strict' : 'lax',
+      maxAge: refreshTokenMaxAge,
       path: '/',
     });
   }
@@ -113,7 +126,7 @@ export class AuthService {
     }
 
     const tokens = await this.generateTokens(user);
-    this.setCookies(res, tokens.refreshToken);
+    this.setCookies(res, tokens);
 
     return {
       accessToken: tokens.accessToken,
@@ -127,10 +140,19 @@ export class AuthService {
   }
 
   async logout(res: Response): Promise<{ message: string }> {
+    // Clear access token cookie
+    res.clearCookie('access_token', {
+      httpOnly: true,
+      secure: this.config.isProduction,
+      sameSite: this.config.isProduction ? 'strict' : 'lax',
+      path: '/',
+    });
+
+    // Clear refresh token cookie
     res.clearCookie('refresh_token', {
       httpOnly: true,
       secure: this.config.isProduction,
-      sameSite: 'strict',
+      sameSite: this.config.isProduction ? 'strict' : 'lax',
       path: '/',
     });
 
@@ -138,7 +160,8 @@ export class AuthService {
   }
 
   async refreshAccessToken(
-    refreshAccessToken: string
+    refreshAccessToken: string,
+    res: Response // ✅ Add res parameter
   ): Promise<{ accessToken: string }> {
     try {
       const refreshTokenSecret = this.config.authConfig.jwtRefreshTokenSecret;
@@ -179,6 +202,15 @@ export class AuthService {
         secret: accessTokenSecret,
         expiresIn: accessTokenExpiry,
       } as JwtSignOptions);
+
+      // ✅ Set the new access token in cookie
+      res.cookie('access_token', accessToken, {
+        httpOnly: true,
+        secure: this.config.isProduction,
+        sameSite: this.config.isProduction ? 'strict' : 'lax',
+        maxAge: accessTokenExpiry,
+        path: '/',
+      });
 
       return { accessToken };
     } catch (error) {

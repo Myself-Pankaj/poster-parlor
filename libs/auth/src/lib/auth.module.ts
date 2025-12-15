@@ -8,8 +8,7 @@ import { GoogleAuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from '../strategies/jwt.strategy';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
-import { RolesGuard } from '../guards/role.guard';
-
+import { RoleGurad } from '../guards/role.guard';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
@@ -21,14 +20,13 @@ import { RolesGuard } from '../guards/role.guard';
         config: AppConfigService
       ): Promise<JwtModuleOptions> => {
         const secret = config.authConfig.jwtRefreshTokenSecret;
-        const expiresIn = config.authConfig.jwtRefreshTokenExpiry;
-
-        const normalizedExpiresIn = expiresIn;
+        const expiry = config.authConfig.jwtRefreshTokenExpiry;
 
         return {
           secret,
+
           signOptions: {
-            expiresIn: normalizedExpiresIn,
+            expiresIn: expiry,
           },
         };
       },
@@ -36,7 +34,7 @@ import { RolesGuard } from '../guards/role.guard';
     }),
   ],
   controllers: [GoogleAuthController],
-  providers: [AuthService, JwtStrategy, JwtAuthGuard, RolesGuard],
-  exports: [AuthService, JwtAuthGuard, RolesGuard, JwtStrategy],
+  providers: [AuthService, JwtStrategy, JwtAuthGuard, RoleGurad],
+  exports: [AuthService, JwtStrategy, JwtAuthGuard, RoleGurad],
 })
 export class AuthModule {}

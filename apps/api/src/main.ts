@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { AppLogger } from '@poster-parlor-api/logger';
 import { AppConfigService } from '@poster-parlor-api/config';
@@ -8,6 +8,7 @@ import {
   ResponseInterceptor,
 } from '@poster-parlor-api/utils';
 import cookieParser from 'cookie-parser';
+import { JwtAuthGuard } from '@poster-parlor-api/auth';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
@@ -24,6 +25,11 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
+  app.enableCors({
+    credential: true,
+    origin: 'localhost',
+  });
+
   // Global pipes
   app.useGlobalPipes(
     new ValidationPipe({
@@ -39,6 +45,10 @@ async function bootstrap() {
   // // Global filters and interceptors (inject logger)
   app.useGlobalFilters(new GlobalExceptionFilter(logger));
   app.useGlobalInterceptors(new ResponseInterceptor(logger));
+
+  //GLobal gaurds
+  const reflector = app.get(Reflector);
+  app.useGlobalGuards(new JwtAuthGuard(reflector));
 
   const port = config.appConfig.port;
   await app.listen(port);
