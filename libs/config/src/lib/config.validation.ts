@@ -1,12 +1,17 @@
 import { Logger } from '@nestjs/common';
-import { plainToInstance, Type } from 'class-transformer';
+import { plainToInstance, Transform, Type } from 'class-transformer';
 import {
+  ArrayNotEmpty,
+  IsArray,
   IsEnum,
   IsNotEmpty,
   IsNumber,
   IsString,
+  Matches,
   Max,
   Min,
+  NotEquals,
+  ValidateIf,
   validateSync,
   ValidationError,
 } from 'class-validator';
@@ -28,6 +33,18 @@ class EnvironmentVaribale {
   @Min(1000, { message: 'PORT must be at least 1000' })
   @Max(65535, { message: 'PORT must be less than 65535' })
   PORT!: number;
+  @Transform(({ value }) =>
+    typeof value === 'string'
+      ? value.split(',').map((origin: string) => origin.trim())
+      : []
+  )
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsString({ each: true })
+  @Matches(/^http?:\/\/.+$/, { each: true })
+  @ValidateIf((env) => env.NODE_ENV === 'production')
+  @NotEquals('*')
+  ALLOWED_ORIGINS!: string[];
 
   @IsString({ message: 'DB_URL must be a valid string' })
   @IsNotEmpty({ message: 'DB_URL is required' })
@@ -74,6 +91,19 @@ class EnvironmentVaribale {
   @IsString({ message: 'JWT_ACCESS_TOKEN_EXPIRES_IN must be a valid string' })
   @IsNotEmpty({ message: 'JWT_ACCESS_TOKEN_EXPIRES_IN is required' })
   JWT_REFRESH_TOKEN_EXPIRES_IN!: string;
+
+  /* ---------------- Cloudinary ---------------- */
+  @IsString({ message: 'CLOUDINARY_CLOUD_NAME must be a valid string' })
+  @IsNotEmpty({ message: 'CLOUDINARY_CLOUD_NAME is required' })
+  CLOUDINARY_CLOUD_NAME!: string;
+
+  @IsString({ message: 'CLOUDINARY_API_KEY must be a valid string' })
+  @IsNotEmpty({ message: 'CLOUDINARY_API_KEY is required' })
+  CLOUDINARY_API_KEY!: string;
+
+  @IsString({ message: 'CLOUDINARY_API_SECRET must be a valid string' })
+  @IsNotEmpty({ message: 'CLOUDINARY_API_SECRETs is required' })
+  CLOUDINARY_API_SECRET!: string;
 }
 
 const logger = new Logger('ConfigValidation');

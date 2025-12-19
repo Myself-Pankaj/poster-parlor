@@ -1,6 +1,7 @@
 export interface AppConfig {
   nodeEnv: 'development' | 'production';
   port: number;
+  allowedOrigin: string[];
 }
 export interface DBConfig {
   dbname: string;
@@ -16,4 +17,10 @@ export interface AuthConfig {
   jwtAccessTokenExpiry: number;
   jwtRefreshTokenSecret: string;
   jwtRefreshTokenExpiry: number;
+}
+
+export interface CloudinaryConfig {
+  cloudinaryName: string;
+  cloudinaryApiKey: string;
+  cloudinaryApiSecret: string;
 }

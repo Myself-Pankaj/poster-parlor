@@ -12,12 +12,15 @@ import { AuthService } from './auth.service';
 import { GoogleLoginDto } from '@poster-parlor-api/models';
 import type { Response, Request } from 'express';
 import { UnauthorizedException } from '@poster-parlor-api/utils';
-import { RequestUser } from '@poster-parlor-api/shared';
+import type { AuthenticatedUser } from '@poster-parlor-api/shared';
+
+import { Auth, CurrentUser, Public } from '../decorators/auth.decorator'; // Made changes in me  route as well
 
 @Controller('auth/google')
 export class GoogleAuthController {
   constructor(private readonly googleAuthService: AuthService) {}
 
+  @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
   async googleLogin(
@@ -31,6 +34,7 @@ export class GoogleAuthController {
     return result;
   }
 
+  @Public()
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   async refresh(
@@ -47,12 +51,15 @@ export class GoogleAuthController {
 
     return result;
   }
-  @Get('me')
-  async getCurrentUser(@Res() req: Request & { user: RequestUser }) {
-    const result = req.user;
+
+  @Auth()
+  @Get('me') // Made chnages from @Res to used Current user decorator
+  async getCurrentUser(@CurrentUser() user: AuthenticatedUser) {
+    const result = user;
     return result;
   }
 
+  @Auth()
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   async logout(@Res({ passthrough: true }) res: Response) {

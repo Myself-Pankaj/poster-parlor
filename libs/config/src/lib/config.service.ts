@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AppConfig, DBConfig, AuthConfig } from '@poster-parlor-api/shared';
+import {
+  AppConfig,
+  DBConfig,
+  AuthConfig,
+  CloudinaryConfig,
+} from '@poster-parlor-api/shared';
 @Injectable()
 export class AppConfigService {
   constructor(private readonly configService: ConfigService) {}
@@ -11,6 +16,7 @@ export class AppConfigService {
         'NODE_ENV'
       ),
       port: this.configService.getOrThrow<number>('PORT'),
+      allowedOrigin: this.configService.getOrThrow<string[]>('ALLOWED_ORIGINS'),
     };
   }
   get dbConfig(): DBConfig {
@@ -39,6 +45,19 @@ export class AppConfigService {
       ),
       jwtRefreshTokenExpiry: this.timeStringToMilliseconds(
         this.configService.getOrThrow<string>('JWT_REFRESH_TOKEN_EXPIRES_IN')
+      ),
+    };
+  }
+
+  get cloudinaryConfig(): CloudinaryConfig {
+    return {
+      cloudinaryName: this.configService.getOrThrow<string>(
+        'CLOUDINARY_CLOUD_NAME'
+      ),
+      cloudinaryApiKey:
+        this.configService.getOrThrow<string>('CLOUDINARY_API_KEY'),
+      cloudinaryApiSecret: this.configService.getOrThrow<string>(
+        'CLOUDINARY_API_SECRET'
       ),
     };
   }
