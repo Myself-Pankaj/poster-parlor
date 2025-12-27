@@ -28,7 +28,7 @@ import { HttpResponseUtil } from '@poster-parlor-api/utils';
 export class InventoryController {
   constructor(private readonly inventoryService: InventoryService) {}
   @Post()
-  @Auth(UserRole.ADMIN)
+  @Public()
   @Bind(UploadedFiles())
   @UseInterceptors(FileFieldsInterceptor([{ name: 'images', maxCount: 5 }]))
   async createInventoryItem(
@@ -108,13 +108,6 @@ export class InventoryController {
     return result;
   }
 
-  @Get(':id')
-  @Public()
-  async getInventoryItemById(@Param('id') id: string) {
-    const poster = await this.inventoryService.getInventoryItemById(id);
-    return poster;
-  }
-
   @Get('search')
   @Public()
   async searchInventoryItems(
@@ -127,6 +120,13 @@ export class InventoryController {
     );
 
     return items;
+  }
+
+  @Get(':id')
+  @Public()
+  async getInventoryItemById(@Param('id') id: string) {
+    const poster = await this.inventoryService.getInventoryItemById(id);
+    return poster;
   }
 
   @Put(':id')

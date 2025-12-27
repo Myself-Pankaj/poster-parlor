@@ -16,6 +16,15 @@
       "path": "../../libs/utils/tsconfig.lib.json"
     },
     {
+      "path": "../../libs/admin/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/orders/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/review/tsconfig.lib.json"
+    },
+    {
       "path": "../../libs/inventory/tsconfig.lib.json"
     },
     {

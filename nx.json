@@ -39,7 +39,8 @@
         "libs/logger/*",
         "libs/config/*",
         "libs/shared/*",
-        "libs/models/*"
+        "libs/models/*",
+        "libs/review/*"
       ]
     },
     {
@@ -82,7 +83,8 @@
         "libs/logger/*",
         "libs/config/*",
         "libs/shared/*",
-        "libs/models/*"
+        "libs/models/*",
+        "libs/review/*"
       ],
       "options": {
         "typecheck": {

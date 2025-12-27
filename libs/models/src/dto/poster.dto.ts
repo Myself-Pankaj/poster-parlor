@@ -8,6 +8,35 @@ import {
   IsString,
   Min,
 } from 'class-validator';
+import { Transform } from 'class-transformer';
+
+// Helper function to parse JSON strings from FormData
+const parseJsonArray = ({ value }: { value: unknown }) => {
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? parsed : [value];
+    } catch {
+      return [value];
+    }
+  }
+  return value;
+};
+
+const parseBoolean = ({ value }: { value: unknown }) => {
+  if (typeof value === 'string') {
+    return value === 'true';
+  }
+  return value;
+};
+
+const parseNumber = ({ value }: { value: unknown }) => {
+  if (typeof value === 'string') {
+    const num = parseFloat(value);
+    return isNaN(num) ? value : num;
+  }
+  return value;
+};
 
 export class AddPosterDto {
   @IsString()
@@ -57,21 +86,38 @@ export class UpdatePosterDto {
   description?: string;
 
   @IsOptional()
+  @Transform(parseNumber)
   @IsNumber()
   @Min(0)
   price?: number;
 
   @IsOptional()
+  @Transform(parseNumber)
   @IsNumber()
   @Min(0)
   stock?: number;
 
   @IsOptional()
+  @IsString()
+  dimensions?: string;
+
+  @IsOptional()
+  @IsString()
+  category?: string;
+
+  @IsOptional()
+  @Transform(parseBoolean)
+  @IsBoolean()
+  isAvailable?: boolean;
+
+  @IsOptional()
+  @Transform(parseJsonArray)
   @IsArray()
   @IsString({ each: true })
   categories?: string[];
 
   @IsOptional()
+  @Transform(parseJsonArray)
   @IsArray()
   @IsString({ each: true })
   tags?: string[];
@@ -81,6 +127,7 @@ export class UpdatePosterDto {
   material?: string;
 
   @IsOptional()
+  @Transform(parseJsonArray)
   @IsArray()
   @IsString({ each: true })
   imagesToDelete?: string[]; // Array of public_ids to delete

@@ -8,7 +8,7 @@ import { GoogleAuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from '../strategies/jwt.strategy';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
-import { RoleGurad } from '../guards/role.guard';
+import { RoleGuard } from '../guards/role.guard';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
@@ -34,7 +34,7 @@ import { RoleGurad } from '../guards/role.guard';
     }),
   ],
   controllers: [GoogleAuthController],
-  providers: [AuthService, JwtStrategy, JwtAuthGuard, RoleGurad],
-  exports: [AuthService, JwtStrategy, JwtAuthGuard, RoleGurad],
+  providers: [AuthService, JwtStrategy, JwtAuthGuard, RoleGuard],
+  exports: [AuthService, JwtStrategy, JwtAuthGuard, RoleGuard],
 })
 export class AuthModule {}

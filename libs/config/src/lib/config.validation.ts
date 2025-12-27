@@ -41,7 +41,7 @@ class EnvironmentVaribale {
   @IsArray()
   @ArrayNotEmpty()
   @IsString({ each: true })
-  @Matches(/^http?:\/\/.+$/, { each: true })
+  @Matches(/^https?:\/\/.+$/, { each: true })
   @ValidateIf((env) => env.NODE_ENV === 'production')
   @NotEquals('*')
   ALLOWED_ORIGINS!: string[];
@@ -104,6 +104,15 @@ class EnvironmentVaribale {
   @IsString({ message: 'CLOUDINARY_API_SECRET must be a valid string' })
   @IsNotEmpty({ message: 'CLOUDINARY_API_SECRETs is required' })
   CLOUDINARY_API_SECRET!: string;
+
+  /* ---------------- Razorpay ---------------- */
+  @IsString({ message: 'RAZORPAY_KEY_ID must be a valid string' })
+  @IsNotEmpty({ message: 'RAZORPAY_KEY_ID is required' })
+  RAZORPAY_API_KEY!: string;
+
+  @IsString({ message: 'RAZORPAY_KEY_SECRET must be a valid string' })
+  @IsNotEmpty({ message: 'RAZORPAY_KEY_SECRET is required' })
+  RAZORPAY_API_SECRET!: string;
 }
 
 const logger = new Logger('ConfigValidation');

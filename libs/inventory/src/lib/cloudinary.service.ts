@@ -22,7 +22,7 @@ export class CloudinaryService {
     try {
       const result = await new Promise<UploadApiResponse>((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
-          { floader: 'Posters', resource_type: 'image' },
+          { folder: 'Posters', resource_type: 'image' },
           (error, res) => {
             if (error) return reject(error);
             resolve(res as UploadApiResponse);

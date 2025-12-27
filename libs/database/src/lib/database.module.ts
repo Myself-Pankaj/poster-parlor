@@ -6,7 +6,7 @@ import { buildMongoConfig } from './database.config';
 import { setUpMongoDbConnection } from './database.connection';
 import { Connection } from 'mongoose';
 import { DatabaseController } from './database.controller';
-import { DatabseHealthService } from './database.service';
+import { DatabaseHealthService } from './database.service';
 @Module({
   imports: [
     ConfigModule,
@@ -27,7 +27,7 @@ import { DatabseHealthService } from './database.service';
     }),
   ],
   controllers: [DatabaseController],
-  providers: [DatabseHealthService],
+  providers: [DatabaseHealthService],
   exports: [MongooseModule],
 })
 export class DatabaseModule implements OnModuleInit {

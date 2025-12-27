@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { UserRole } from '@poster-parlor-api/models';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
-import { RoleGurad } from '../guards/role.guard';
+import { RoleGuard } from '../guards/role.guard';
 import { AuthenticatedUser, RequestWithUser } from '@poster-parlor-api/shared';
 
 export const IS_PUBLIC_KEY = 'isPublic';
@@ -39,7 +39,7 @@ export const Auth = (...roles: UserRole[]) => {
     return applyDecorators(UseGuards(JwtAuthGuard));
   }
 
-  return applyDecorators(UseGuards(JwtAuthGuard, RoleGurad), Roles(...roles));
+  return applyDecorators(UseGuards(JwtAuthGuard, RoleGuard), Roles(...roles));
 };
 
 export const CurrentUser = createParamDecorator(
@@ -66,7 +66,7 @@ export const CurrentUser = createParamDecorator(
         const value = user[data];
 
         if (value === undefined || value === null) {
-          throw new UnauthorizedException(`Usert property '${data}' not found`);
+          throw new UnauthorizedException(`User property '${data}' not found`);
         }
         return value;
       }
@@ -75,7 +75,7 @@ export const CurrentUser = createParamDecorator(
       if (error instanceof UnauthorizedException) {
         throw error;
       }
-      throw new UnauthorizedException('Failed to extract uer from request');
+      throw new UnauthorizedException('Failed to extract user from request');
     }
   }
 );

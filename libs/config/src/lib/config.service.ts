@@ -5,6 +5,7 @@ import {
   DBConfig,
   AuthConfig,
   CloudinaryConfig,
+  PaymentConfig,
 } from '@poster-parlor-api/shared';
 @Injectable()
 export class AppConfigService {
@@ -58,6 +59,15 @@ export class AppConfigService {
         this.configService.getOrThrow<string>('CLOUDINARY_API_KEY'),
       cloudinaryApiSecret: this.configService.getOrThrow<string>(
         'CLOUDINARY_API_SECRET'
+      ),
+    };
+  }
+
+  get paymentConfig(): PaymentConfig {
+    return {
+      razorpayKeyId: this.configService.getOrThrow<string>('RAZORPAY_API_KEY'),
+      razorpayKeySecret: this.configService.getOrThrow<string>(
+        'RAZORPAY_API_SECRET'
       ),
     };
   }

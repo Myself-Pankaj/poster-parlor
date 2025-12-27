@@ -49,8 +49,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         }
         if (info.name === 'JsonWebTokenError') {
           throw new CustomHttpException(
-            'Token has expired',
-            HttpStatus.INTERNAL_SERVER_ERROR,
+            'Invalid token',
+            HttpStatus.UNAUTHORIZED,
             'JSON_WEB_TOKEN_ERROR'
           );
         }

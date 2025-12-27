@@ -5,7 +5,7 @@ import { InjectConnection } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 
 @Injectable()
-export class DatabseHealthService implements OnModuleDestroy, OnModuleInit {
+export class DatabaseHealthService implements OnModuleDestroy, OnModuleInit {
   private monitor!: DatabaseHealthMonitor;
   private checker!: DatabaseHealthChecker;
 

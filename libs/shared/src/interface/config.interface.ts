@@ -24,3 +24,8 @@ export interface CloudinaryConfig {
   cloudinaryApiKey: string;
   cloudinaryApiSecret: string;
 }
+
+export interface PaymentConfig {
+  razorpayKeyId: string;
+  razorpayKeySecret: string;
+}

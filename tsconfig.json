@@ -38,6 +38,9 @@
     },
     {
       "path": "./libs/models"
+    },
+    {
+      "path": "./libs/review"
     }
   ]
 }

@@ -6,7 +6,7 @@ import { ForbiddenException } from '@poster-parlor-api/utils';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class RoleGurad implements CanActivate {
+export class RoleGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
 
   canActivate(

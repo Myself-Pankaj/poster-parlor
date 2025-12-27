@@ -6,6 +6,10 @@ import { AppConfigModule } from '@poster-parlor-api/config';
 import { DatabaseModule } from '@poster-parlor-api/database';
 import { AuthModule } from '@poster-parlor-api/auth';
 import { InventoryModule } from '@poster-parlor-api/inventory';
+import { ReviewModule } from '@poster-parlor-api/review';
+import { OrderModule } from '@poster-parlor-api/orders';
+import { AdminModule } from '@poster-parlor-api/admin';
+
 @Module({
   imports: [
     LoggerModule,
@@ -13,6 +17,9 @@ import { InventoryModule } from '@poster-parlor-api/inventory';
     DatabaseModule,
     AuthModule,
     InventoryModule,
+    ReviewModule,
+    OrderModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
