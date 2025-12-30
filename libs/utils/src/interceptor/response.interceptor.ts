@@ -40,11 +40,44 @@ export class ResponseInterceptor<T>
         const statusCode = response.statusCode;
         const duration = Date.now() - startTime;
 
-        // Build success response
+        // Check if response is already wrapped (has success, data, and is an ApiResponse structure)
+        const isAlreadyWrapped =
+          data &&
+          typeof data === 'object' &&
+          'success' in data &&
+          'statusCode' in data &&
+          'timestamp' in data;
+
+        // If already wrapped, just pass through
+        if (isAlreadyWrapped) {
+          // Update path and timestamp if needed
+          data.path = data.path || url;
+          data.timestamp = data.timestamp || new Date().toISOString();
+
+          // Log successful requests
+          this.logger.logWithMetadata(
+            `✓ ${method} ${url} ${statusCode} - ${duration}ms`,
+            {
+              method,
+              url,
+              statusCode,
+              duration: `${duration}ms`,
+              userId: user?.id || user?.sub,
+              ip: (headers['x-forwarded-for'] as string) || ip,
+              userAgent,
+              controller,
+              handler,
+            }
+          );
+
+          return data;
+        }
+
+        // Build success response for unwrapped data
         const successResponse: SuccessResponse<T> = {
           success: true,
-          message: data?.message || 'Request successful',
-          data: data?.data !== undefined ? data.data : data,
+          message: 'Request successful',
+          data: data,
           timestamp: new Date().toISOString(),
           path: url,
         };

@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "npx nx run api:serve:development --no-inspect --output-style=stream",
-    "start": "npx nx run api:serve:production --no-inspect",
+    "start": "npx nx run api:serve:production --no-inspect --output-style=stream",
     "build": "npx nx build api",
     "lint": "npx nx lint api",
     "format": "npx nx format:write",

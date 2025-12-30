@@ -5,3 +5,4 @@ export * from './interface/utils.interface';
 export * from './interface/auth.interface';
 export * from './interface/inventory.interface';
 export * from './interface/review.interface';
+export * from './interface/order.interface';

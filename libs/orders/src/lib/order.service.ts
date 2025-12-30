@@ -1,32 +1,21 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import {
-  CreateOrderDto,
-  Order,
-  OrderDocument,
-  OrderStatus,
-  Poster,
-  PosterDocument,
-  User,
-  UserDocument,
-} from '@poster-parlor-api/models';
 import {
   BadRequestException,
+  Injectable,
   NotFoundException,
-} from '@poster-parlor-api/utils';
+} from '@nestjs/common';
+import {
+  Order,
+  OrderDocument,
+  Poster,
+  User,
+  PosterDocument,
+  UserDocument,
+  CreateOrderDto,
+  OrderStatus,
+} from '@poster-parlor-api/models';
+import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-
-export interface PaginatedOrdersResponse {
-  orders: OrderDocument[];
-  pagination: {
-    currentPage: number;
-    totalPages: number;
-    totalOrders: number;
-    limit: number;
-    hasNextPage: boolean;
-    hasPrevPage: boolean;
-  };
-}
+import { PaginatedOrdersResponse } from '@poster-parlor-api/shared';
 
 @Injectable()
 export class OrdersService {

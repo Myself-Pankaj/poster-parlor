@@ -1,8 +1,5 @@
 import { Module } from '@nestjs/common';
-
-import { OrdersController } from './order.controller';
-import { OrdersService } from './order.service';
-import { PaymentService } from './payment.service';
+import { MongooseModule } from '@nestjs/mongoose';
 import {
   Order,
   OrderSchema,
@@ -11,12 +8,12 @@ import {
   User,
   UserSchema,
 } from '@poster-parlor-api/models';
-import { MongooseModule } from '@nestjs/mongoose';
-import { AppConfigModule } from '@poster-parlor-api/config';
+import { OrdersController } from './order.controller';
+import { OrdersService } from './order.service';
+import { PaymentService } from './payment.service';
 
 @Module({
   imports: [
-    AppConfigModule,
     MongooseModule.forFeature([
       { name: Order.name, schema: OrderSchema },
       { name: Poster.name, schema: PosterSchema },

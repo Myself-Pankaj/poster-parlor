@@ -9,7 +9,6 @@ import { InventoryModule } from '@poster-parlor-api/inventory';
 import { ReviewModule } from '@poster-parlor-api/review';
 import { OrderModule } from '@poster-parlor-api/orders';
 import { AdminModule } from '@poster-parlor-api/admin';
-
 @Module({
   imports: [
     LoggerModule,
